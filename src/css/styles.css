@@ -14,6 +14,7 @@ body {
 
 form {
   padding-top: 15px;
+  max-width: 360px;
 }
 
 .form > label {
@@ -79,29 +80,30 @@ label > input[type='radio'] {
 form fieldset {
   margin-bottom: 20px;
 }
-
-form button[type='submit'] {
-  padding: 8px 16px;
-  width: 100%;
-  max-width: 360px;
+.start-btn {
+  width: 75px;
   height: 40px;
-  font-weight: 500;
+  padding: 8px 16px 8px 16px;
+  border-radius: 8px;
+  background: rgb(78, 117, 255);
+  border: 1px;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
   font-size: 16px;
+  font-weight: 500;
   line-height: 1.5;
   letter-spacing: 0.04em;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 8px;
-  background: #4e75ff;
-  border: none;
 }
 
-form button[type='submit']:hover,
-form button[type='submit']:focus {
-  background-color: #6c8cff;
+.start-btn:hover {
+  background: rgb(108, 140, 255);
 }
 
-/* ++++++++ timer ++++++++++++ */
+.start-btn:disabled {
+  background: rgb(207, 207, 207);
+  color: rgb(152, 152, 152);
+}
+/* -------------------------------------- */
 
 .sectiopn-timer {
   padding-top: 15px;
@@ -162,20 +164,6 @@ form button[type='submit']:focus {
   border: none;
 }
 
-button[type='button'] {
-  padding: 8px 16px;
-  width: 75px;
-  height: 40px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-  color: #989898;
-  background: #cfcfcf;
-}
-
 .timer {
   display: flex;
   gap: 24px;
@@ -201,4 +189,21 @@ button[type='button'] {
   line-height: 1.5;
   color: #2e2f42;
   text-transform: uppercase;
+}
+.snac-btn {
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  border-color: transparent;
+  border-radius: 8px;
+  background: rgb(78, 117, 255);
+  width: 100%;
+  min-height: 40px;
+}
+
+.snac-btn:hover {
+  background: rgb(108, 140, 255);
 }

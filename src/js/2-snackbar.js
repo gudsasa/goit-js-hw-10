@@ -1,111 +1,46 @@
-// Описаний у документації
-import iziToast from "izitoast";
-// Додатковий імпорт стилів
-import "izitoast/dist/css/iziToast.min.css";
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-const form = document.querySelector(".form");
-const inputDealy = form.elements.delay;
-const radiobutton = form.elements.state;
-const btnSubmit = document.querySelector(".form button")
+const formEl = document.querySelector('.form');
 
+formEl.addEventListener('submit', event => {
+  event.preventDefault();
 
-function errorMessage (data) {
-    iziToast.error({
-        title: 'Error:',
-        message: data,
+  const inputEl = event.target.elements.delay;
+  const stateRadiosEl = event.target.elements.state;
+  const delay = parseInt(inputEl.value);
+
+  let state;
+  for (const radio of stateRadiosEl) {
+    if (radio.checked) {
+      state = radio.value;
+      break;
+    }
+  }
+
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (state === 'fulfilled') {
+        resolve(delay);
+      } else {
+        reject(delay);
+      }
+    }, delay);
+  });
+
+  promise
+    .then(delay => {
+      iziToast.success({
+        title: '✅ Fulfilled promise',
+        message: `in ${delay}ms`,
         position: 'topRight',
-        messageColor: 'white',
-        backgroundColor: 'rgb(238, 4, 50)',
-        theme: 'dark', 
-        color: 'red', 
-        width: "500",
-        messageSize: "16",
-        titleSize:"16",
-        progressBar: false,
-    });
-}
-
-
-function succesMessage (data) {
-    iziToast.success({
-        title: 'OK',
-        message: data,
-        position: 'topRight',
-        messageColor: 'white',
-        backgroundColor: "#59a10d",
-        theme: 'dark', 
-        messageSize: "16",
-        titleSize:"16",
-        progressBar: false,
-    });
-}
- 
-function warningMessage (data) {
-    iziToast.warning({
-        title: 'Caution',
-        message: data,
-        position: 'topRight',
-        messageColor: 'white',
-        backgroundColor: " #ffa000",
-        theme: 'dark', 
-        messageSize: "16",
-        titleSize:"16",
-        progressBar: false,
-    });
-}
-
-
-function makePromises (options) {
-    const {delay, state} = options;
-    const newPromise = new Promise ((resolve, reject) => {
-        setTimeout (()=>{
-            if(state === "fulfilled") {
-                resolve (`Fulfilled promise in ${delay}ms`)
-            }
-            else {
-                reject(`Rejected promise in ${delay}ms`)
-            }
-        }, delay)
+      });
     })
-    return newPromise 
-}
-
-
-btnSubmit.addEventListener("click", (event) => {
-    event.preventDefault();
-    const promiseOptions = {}
-    if(inputDealy.value !== "" ) {
-        promiseOptions.delay = Number(inputDealy.value.trim())
-    }
-   
-    const isChecked = Array.from(radiobutton).some(element => element.checked );
-    if(isChecked) {
-        radiobutton.forEach(element => {
-            if (element.checked) {
-                promiseOptions.state = element.value;
-            }
-        })
-    }
-
-    const promiseOptionsLength= Object.values(promiseOptions).length
-
-    if (promiseOptionsLength !== 2) {
-       warningMessage ("fill all fields") 
-
-    }
-    else {
-        makePromises (promiseOptions)
-            .then (data =>{
-                succesMessage (data)
-            })
-            .catch (data => {
-                errorMessage(data)
-            })
-    }
-
-    radiobutton.forEach(element => {
-        element.checked = false 
-    })
-    inputDealy.value ="";
-
-})
+    .catch(delay => {
+      iziToast.error({
+        title: '❌ Rejected promise',
+        message: `in ${delay}ms`,
+        position: 'topRight',
+      });
+    });
+});
